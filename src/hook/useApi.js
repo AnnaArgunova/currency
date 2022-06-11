@@ -8,13 +8,16 @@ export default function useApi() {
     const [EUR_UAH, setEUR_UAH] = useState(null);
     const [USD_UAH, setUSD_UAH] = useState(null);
     const [UAH_USD, setUAH_USD] = useState(null);
+    const [EUR_USD, setEUR_USD] = useState(null);
+    const [USD_EUR, setUSD_EUR] = useState(null);
 
     useEffect( ()=>{
         setLoading(true);
 
         getCurrency('UAH', 'EUR')
             .then(data=>{
-                setUAH_EUR(data.result);
+                const props = data.result.EUR *1000;
+                setUAH_EUR(props);
             })
             .catch(error=>{
                 setError(error)
@@ -22,8 +25,8 @@ export default function useApi() {
 
         getCurrency( 'EUR', 'UAH')
             .then(data=>{
-                console.log(data.result)
-                setUSD_UAH(data.result);
+                const props =+ data.result.UAH.toFixed(2);
+                setUSD_UAH(props);
             })
             .catch(error=>{
                 setError(error)
@@ -31,8 +34,8 @@ export default function useApi() {
 
         getCurrency( 'USD', 'UAH')
             .then(data=>{
-                console.log(data.result)
-                setEUR_UAH(data.result);
+                const props = +data.result.UAH.toFixed(2);
+                setEUR_UAH(props);
             })
             .catch(error=>{
                 setError(error)
@@ -40,12 +43,32 @@ export default function useApi() {
 
         getCurrency( 'UAH', 'USD')
             .then(data=>{
-                console.log(data.result)
-                setUAH_USD(data.result);
+                const props = data.result.USD * 1000;
+                setUAH_USD(props);
             })
             .catch(error=>{
                 setError(error)
             })
+
+        getCurrency( 'EUR', 'USD')
+            .then(data=>{
+                const props = +data.result.USD.toFixed(2);
+                setEUR_USD(props);
+            })
+            .catch(error=>{
+                setError(error)
+            })
+
+
+        getCurrency( 'USD', 'EUR')
+            .then(data=>{
+                const props = +data.result.EUR.toFixed(2);
+                setUSD_EUR(props);
+            })
+            .catch(error=>{
+                setError(error)
+            })
+
         setLoading(false);
 
     },[])
@@ -56,6 +79,8 @@ export default function useApi() {
         EUR_UAH,
         USD_UAH,
         UAH_USD,
+        EUR_USD,
+        USD_EUR,
         loading,
         error,
     };
